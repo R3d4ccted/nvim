@@ -1,3 +1,17 @@
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- or "main" or a specific tag
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
+
+
 require("lazy_init") -- Load lazy.nvim (if not already in your config)
 
 require("lazy").setup({
@@ -13,13 +27,6 @@ require("lazy").setup({
     { "hrsh7th/cmp-path" },
     { "saadparwaiz1/cmp_luasnip" },
     { "L3MON4D3/LuaSnip" },
-
-    -- Markdown Preview
-    {
-      "iamcco/markdown-preview.nvim",
-      build = function() vim.fn["mkdp#util#install"]() end,
-      ft = { "markdown" },
-    },
 
     -- VimTeX for LaTeX
     {
