@@ -44,10 +44,60 @@ vim.opt.smartindent = true     -- Smarter autoindenting for C-like languages
 vim.g.mapleader = " " -- Set leader key to space
 vim.g.maplocalleader = "\\"
 
--- Example: Save file
-vim.keymap.set("n", "<leader>w", "<cmd>w<cr>", { desc = "Save file" })
--- Example: Quit
-vim.keymap.set("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit" })
+-- General
+vim.keymap.set("n", "<leader>w", "<cmd>w<cr>", { desc = "Save file" }) --
+vim.keymap.set("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit window" }) --
+vim.keymap.set("n", "<leader>Q", "<cmd>qa!<cr>", { desc = "Quit All (force)" })
+vim.keymap.set("n", "<leader>x", "<cmd>bd<cr>", { desc = "Close current buffer" })
+vim.keymap.set("n", "<leader>so", "<cmd>source %<cr>", { desc = "Source current file" })
+vim.keymap.set("n", "<leader>ESC", "<cmd>nohlsearch<CR>", { desc = "Clear search highlight" })
+
+
+-- Navigation
+vim.keymap.set("n", "<leader>e", "<cmd>NvimTreeToggle<cr>", { desc = "Toggle File Explorer (NvimTree)" })
+vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Navigate window left" })
+vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Navigate window down" })
+vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Navigate window up" })
+vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Navigate window right" })
+
+-- Buffer Navigation
+vim.keymap.set("n", "<leader>bn", "<cmd>bnext<cr>", { desc = "Next buffer" })
+vim.keymap.set("n", "<leader>bp", "<cmd>bprevious<cr>", { desc = "Previous buffer" })
+vim.keymap.set("n", "<leader>bl", "<cmd>buffers<cr>", { desc = "List buffers" }) -- See also Telescope for <leader>fb
+
+-- Window Management
+vim.keymap.set("n", "<leader>sv", "<cmd>vsplit<cr>", { desc = "Split window vertically" })
+vim.keymap.set("n", "<leader>sh", "<cmd>split<cr>", { desc = "Split window horizontally" })
+vim.keymap.set("n", "<leader>sc", "<cmd>close<cr>", { desc = "Close current window" })
+vim.keymap.set("n", "<leader>so", "<cmd>only<cr>", { desc = "Close other windows (only this one)" })
+
+
+-- Telescope (mappings are already in its config block, but as a reminder)
+-- <leader>ff for find_files
+-- <leader>fg for live_grep
+-- <leader>fb for buffers
+-- <leader>fh for help_tags
+
+-- ToggleTerm (mappings are in its config block and below for specific terminals)
+-- <c-\> for general toggle
+vim.keymap.set("n", "<leader>tf", "<cmd>ToggleTerm direction=float<cr>", { desc = "ToggleTerm Float" })
+vim.keymap.set("n", "<leader>th", "<cmd>ToggleTerm direction=horizontal<cr>", { desc = "ToggleTerm Horizontal" })
+vim.keymap.set("n", "<leader>tv", "<cmd>ToggleTerm direction=vertical<cr>", { desc = "ToggleTerm Vertical" })
+vim.keymap.set("n", "<leader>lg", "<cmd>ToggleTerm lazygit<cr>", { desc = "ToggleTerm Lazygit" })
+
+
+-- LSP (some common LSP actions, relies on LSP being attached to the buffer)
+vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "LSP Hover" })
+vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "LSP Go to Definition" })
+vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "LSP Go to Declaration" })
+vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "LSP Go to Implementation" })
+vim.keymap.set("n", "gr", vim.lsp.buf.references, { desc = "LSP Go to References" })
+vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "LSP Rename" })
+vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "LSP Code Action" })
+vim.keymap.set("n", "<leader>fm", function() vim.lsp.buf.format { async = true } end, { desc = "LSP Format Document" })
+vim.keymap.set("n", "<leader>ds", vim.diagnostic.open_float, { desc = "Show Line Diagnostics" })
+vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to Previous Diagnostic" })
+vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to Next Diagnostic" })
 
 
 -- --------------------
