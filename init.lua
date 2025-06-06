@@ -65,6 +65,7 @@ require("lazy").setup({
         dependencies = { "nvim-tree/nvim-web-devicons" }, -- Optional, for icons
         config = function()
             require("nvim-tree").setup({})
+            vim.keymap.set("n", "<leader>e", "<cmd>NvimTreeToggle<cr>", { desc = "Toggle File Explorer (NvimTree)" })
         end,
     },
 
