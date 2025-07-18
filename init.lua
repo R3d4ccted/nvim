@@ -126,7 +126,7 @@ require("lazy").setup({
 
     -- LSP & Completion
     { "williamboman/mason.nvim", build = ":MasonUpdate" },
-    { "williamboman/mason-lspconfig.nvim" },
+    { "williamboman/mason-lspconfig.nvim", version = "*"}, 
     { "neovim/nvim-lspconfig" },
     { "hrsh7th/nvim-cmp" },
     { "hrsh7th/cmp-nvim-lsp" },
