@@ -37,14 +37,14 @@ vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 vim.opt.autoindent = true
 vim.opt.smartindent = true
+vim.opt.shortmess:append("I") -- Disable intro message
 
 -- --------------------
 -- KEYMAPPINGS
 -- --------------------
-vim.g.mapleader = " " -- Set leader key to space
+vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
--- General
 vim.keymap.set("n", "<leader>w", "<cmd>w<cr>", { desc = "Save file" })
 vim.keymap.set("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit window" })
 vim.keymap.set("n", "<leader>Q", "<cmd>q!<cr>", { desc = "Quit Current (force)" })
@@ -53,12 +53,6 @@ vim.keymap.set("n", "<leader>x", "<cmd>bdelete<cr>", { desc = "Close current buf
 vim.keymap.set("n", "<leader>so", "<cmd>source %<cr>", { desc = "Source current file" })
 vim.keymap.set("n", "<leader>ESC", "<cmd>nohlsearch<CR>", { desc = "Clear search highlight" })
 
--- Buffer/Tab Navigation
-vim.keymap.set("n", "<leader>.", "<cmd>bnext<cr>", { desc = "Next buffer" })
-vim.keymap.set("n", "<leader>,", "<cmd>bprevious<cr>", { desc = "Previous buffer" })
-vim.keymap.set("n", "<leader>bl", "<cmd>buffers<cr>", { desc = "List buffers" })
-
--- File Explorer
 vim.keymap.set("n", "<leader>e", "<cmd>NvimTreeToggle<cr>", { desc = "Toggle File Explorer" })
 vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Navigate window left" })
 vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Navigate window down" })
@@ -68,63 +62,31 @@ vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Navigate window right" })
 vim.keymap.set("n", "<leader>sv", "<cmd>vsplit<cr>", { desc = "Split window vertically" })
 vim.keymap.set("n", "<leader>sh", "<cmd>split<cr>", { desc = "Split window horizontally" })
 vim.keymap.set("n", "<leader>sc", "<cmd>close<cr>", { desc = "Close current window" })
-vim.keymap.set("n", "<leader>so", "<cmd>only<cr>", { desc = "Close other windows (only this one)" })
+vim.keymap.set("n", "<leader>so", "<cmd>only<cr>", { desc = "Close other windows" })
 
--- <c-\> for general toggle
 vim.keymap.set("n", "<leader>tf", "<cmd>ToggleTerm direction=float<cr>", { desc = "ToggleTerm Float" })
-vim.keymap.set("n", "<leader>th", "<cmd>ToggleTerm direction=horizontal<cr>", { desc = "ToggleTerm Horizontal" })
-vim.keymap.set("n", "<leader>tv", "<cmd>ToggleTerm direction=vertical<cr>", { desc = "ToggleTerm Vertical" })
-vim.keymap.set("n", "<leader>lg", "<cmd>ToggleTerm lazygit<cr>", { desc = "ToggleTerm Lazygit" })
 
+vim.keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Find Files" })
+vim.keymap.set("n", "<leader>fg", "<cmd>Telescope live_grep<cr>", { desc = "Live Grep" })
+vim.keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { desc = "Find Buffers" })
 
--- LSP (some common LSP actions, relies on LSP being attached to the buffer)
-vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "LSP Hover" })
-vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "LSP Go to Definition" })
-vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "LSP Go to Declaration" })
-vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "LSP Go to Implementation" })
-vim.keymap.set("n", "gr", vim.lsp.buf.references, { desc = "LSP Go to References" })
-vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "LSP Rename" })
-vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "LSP Code Action" })
-vim.keymap.set("n", "<leader>fm", function() vim.lsp.buf.format { async = true } end, { desc = "LSP Format Document" })
-vim.keymap.set("n", "<leader>ds", vim.diagnostic.open_float, { desc = "Show Line Diagnostics" })
-vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to Previous Diagnostic" })
-vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to Next Diagnostic" })
-
+vim.keymap.set("n", "<leader>as", "<cmd>Alpha<CR>", { desc = "Show ASCII Splash" })
 
 -- --------------------
--- PLUGIN SETUP (LAZY.NVIM)
+-- PLUGINS
 -- --------------------
 require("lazy").setup({
-    -- Core
-    { "folke/tokyonight.nvim", lazy = false, priority = 1000, opts = {} },
-    { "nvim-lua/plenary.nvim" },
-    { "nvim-tree/nvim-web-devicons" }, -- Icon pack
-
-    -- UI
-    { "nvim-lualine/lualine.nvim" }, -- Statusline
-    { "akinsho/bufferline.nvim", version = "*" }, -- Bufferline/Tabs
-
-    -- File Explorer
+    { "folke/tokyonight.nvim", lazy = false, priority = 1000 },
     { "nvim-tree/nvim-tree.lua" },
-
-    -- Fuzzy Finder
-    {
-        "nvim-telescope/telescope.nvim",
-        branch = "0.1.x",
-        dependencies = { "nvim-lua/plenary.nvim" },
-        config = function()
-            local builtin = require("telescope.builtin")
-            vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Find Files" })
-            vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Live Grep" })
-            vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "Find Buffers" })
-            vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Help Tags" })
-        end,
-    },
-
-    -- Syntax & Highlighting
+    { "nvim-lua/plenary.nvim" },
+    { "nvim-tree/nvim-web-devicons" },
+    { "nvim-telescope/telescope.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
+    { "nvim-lualine/lualine.nvim" },
     { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
-
-    -- LSP & Completion
+    { "windwp/nvim-autopairs", event = "InsertEnter" },
+    { "numToStr/Comment.nvim" },
+    { "lewis6991/gitsigns.nvim" },
+    { "akinsho/toggleterm.nvim", version = "*" },
     { "williamboman/mason.nvim", build = ":MasonUpdate" },
     { "williamboman/mason-lspconfig.nvim", version = "*"}, 
     { "neovim/nvim-lspconfig" },
@@ -132,96 +94,96 @@ require("lazy").setup({
     { "hrsh7th/cmp-nvim-lsp" },
     { "hrsh7th/cmp-buffer" },
     { "hrsh7th/cmp-path" },
-    { "saadparwaiz1/cmp_luasnip" },
     { "L3MON4D3/LuaSnip", build = "make install_jsregexp" },
-    { "rafamadriz/friendly-snippets" },
+    { "saadparwaiz1/cmp_luasnip" },
+    {
+        "goolord/alpha-nvim",
+        config = function()
+            local alpha = require("alpha")
+            local dashboard = require("alpha.themes.dashboard")
 
-    -- Utility
-    { "windwp/nvim-autopairs", event = "InsertEnter", opts = {} },
-    { "numToStr/Comment.nvim" },
-    { "JoosepAlviste/nvim-ts-context-commentstring" }, -- Smarter commenting
-    { "lewis6991/gitsigns.nvim", opts = {} },
-    { "folke/which-key.nvim", event = "VeryLazy", opts = {} },
-    { "akinsho/toggleterm.nvim", version = "*" },
+            dashboard.section.header.val = {
+                "=================================================",
+                "================*###%%##%%##*====================",
+                "============+#*++=++++++=+++=+###=========+#=====",
+                "==========*#++++*+++===++*++=+++**#*======**#*===",
+                "========+#++++#####%%%@@@%%#+++++=++#*====#++#+==",
+                "=======**++=+%@%#*#%%%%%%%%%@*+=+++*++#=+#*++**==",
+                "=====+#+=+++%@%#**++==++*#%%@@++++++*++%#+++*%##+",
+                "====#++++=+%*=+========+===+=*%++=+++**#*=*++++#=",
+                "==+*++===+*++++========+====+++++++=++**##++++#==",
+                "=+#=++++++*++*+++++++++++++=+++++++=++*%#*##%@+==",
+                "=#=+%++=+*+=*%++++++++++#++++++++++++*+%@@%%%%===",
+                "+*+##+++=*++%%++++++++++##+++++++++++*+#@%@@%+===",
+                "+*#*#++++*#*++*+#+++++*+#+**+++++++++*++@@@@%====",
+                "=*#**++++*###%####*+++%#++++#%#+++++++++%@%##====",
+                "====#+++++%@*+++#%*#+*++++#@@%++++++##+*%@@**====",
+                "====+#+**+**=====+=========+#*+++++*#%+%%#++#+===",
+                "=====+#*#%#**=====+++======***#+++*#+%#*##+++#===",
+                "======**%**#*+=====+========*#+++#*++**+#=**=+*==",
+                "++=+++**++***+##%%#**###%@###+#%*+++**++#===*++*=",
+                "+++++#*++*****%%@*+%++%@%%%%*****+++***+**===#+#=",
+                "===+#**#%****#%%%%###@%%*##%#******+*******=****=",
+                "===#*#*=+#**%@@%**+*#*%%%#%@@%***#********%#***==",
+                "===+#**#*=*%%@@%**%###%%@%%%@@@#########%#*%+====",
+                "==============###+=#*#+==========================",
+                "=================================================",
+            }
 
-    -- Debugger
-    { "nvim-neotest/nvim-nio" },
-    { "mfussenegger/nvim-dap" },
-    { "rcarriga/nvim-dap-ui" },
-    { "theHamsta/nvim-dap-virtual-text" },
+            dashboard.section.buttons.val = {
+                dashboard.button("e", "  New file", "<cmd>ene<CR>"),
+                dashboard.button("q", "󰗼  Quit NVIM", "<cmd>qa<CR>"),
+            }
+
+            dashboard.section.footer.val = {
+                "Welcome, Kurond~"
+            }
+
+            dashboard.opts.opts.noautocmd = true
+            alpha.setup(dashboard.opts)
+        end
+    }
+
 })
 
 -- --------------------
--- PLUGIN CONFIGURATIONS (After lazy.setup)
+-- CONFIGS
 -- --------------------
 
--- Set theme
 vim.cmd.colorscheme "tokyonight"
 
--- Bufferline (Tabs)
-require("bufferline").setup({
-    options = {
-        mode = "buffers", -- Or "tabs"
-        separator_style = "slant",
-        show_buffer_close_icons = true,
-        show_close_icon = true,
-        -- Enable mouse clicks
-        diagnostics = "nvim_lsp",
-        offsets = {
-            {
-                filetype = "NvimTree",
-                text = "File Explorer",
-                text_align = "center",
-                separator = true
-            }
-        }
-    }
-})
-
--- Lualine (Statusline)
 require("lualine").setup({
     options = {
-        theme = 'auto',
+        theme = 'tokyonight',
         component_separators = '|',
         section_separators = '',
     },
 })
 
--- NvimTree (File Explorer)
 require("nvim-tree").setup({})
-
--- Telescope (Fuzzy Finder)
 require("telescope").setup({})
-
--- Treesitter (Syntax)
 require("nvim-treesitter.configs").setup({
-    ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "javascript", "typescript", "python", "rust" },
-    sync_install = false,
-    auto_install = true,
+    ensure_installed = { "c", "lua", "vim", "javascript", "typescript", "python", "rust" },
     highlight = { enable = true },
 })
 
--- Commenting
-require("Comment").setup({
-    pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
-})
+require("Comment").setup()
+require("gitsigns").setup()
+require("toggleterm").setup()
 
--- LSP, Mason, and Completion
+-- LSP + Completion
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 require("mason").setup()
 require("mason-lspconfig").setup({
-    ensure_installed = {
-        "pyright", "clangd", "rust_analyzer", "lua_ls", "bashls",
-        "dockerls", "jsonls", "yamlls", "marksman", "lemminx",
-    },
+    ensure_installed = { "pyright", "clangd", "lua_ls" },
     handlers = {
-        function(server_name) -- default handler
+        function(server_name)
             require("lspconfig")[server_name].setup({
                 capabilities = capabilities,
             })
         end,
-        ["lua_ls"] = function() -- custom handler for lua_ls
+        ["lua_ls"] = function()
             require("lspconfig").lua_ls.setup({
                 capabilities = capabilities,
                 settings = {
@@ -235,8 +197,6 @@ require("mason-lspconfig").setup({
 })
 
 local cmp = require("cmp")
-
--- Now, use that 'cmp' variable to configure the plugin
 cmp.setup({
     snippet = {
         expand = function(args)
@@ -257,3 +217,4 @@ cmp.setup({
         { name = "path" },
     })
 })
+
