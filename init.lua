@@ -79,6 +79,9 @@ require("lazy").setup({
     { "folke/tokyonight.nvim", lazy = false, priority = 1000 },
     { "nvim-tree/nvim-tree.lua" },
     { "nvim-lua/plenary.nvim" },
+    {
+      'nyngwang/nvimgelion',
+    },
     { "nvim-tree/nvim-web-devicons" },
     { "nvim-telescope/telescope.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
     { "nvim-lualine/lualine.nvim" },
@@ -88,12 +91,13 @@ require("lazy").setup({
     { "lewis6991/gitsigns.nvim" },
     { "akinsho/toggleterm.nvim", version = "*" },
     { "williamboman/mason.nvim", build = ":MasonUpdate" },
-    { "williamboman/mason-lspconfig.nvim", version = "*"}, 
+    { "williamboman/mason-lspconfig.nvim"}, 
     { "neovim/nvim-lspconfig" },
     { "hrsh7th/nvim-cmp" },
     { "hrsh7th/cmp-nvim-lsp" },
     { "hrsh7th/cmp-buffer" },
     { "hrsh7th/cmp-path" },
+    { "github/copilot.vim" },
     { "L3MON4D3/LuaSnip", build = "make install_jsregexp" },
     { "saadparwaiz1/cmp_luasnip" },
     {
@@ -176,6 +180,7 @@ local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 require("mason").setup()
 require("mason-lspconfig").setup({
+    automatic_installation = false,
     ensure_installed = { "pyright", "clangd", "lua_ls" },
     handlers = {
         function(server_name)
