@@ -71,6 +71,32 @@ vim.keymap.set("n", "<leader>fg", "<cmd>Telescope live_grep<cr>", { desc = "Live
 vim.keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { desc = "Find Buffers" })
 
 vim.keymap.set("n", "<leader>as", "<cmd>Alpha<CR>", { desc = "Show ASCII Splash" })
+vim.keymap.set("n", "<leader>tt", "<cmd>ToggleTerm<cr>", { desc = "Toggle Terminal" })
+vim.keymap.set("n", "<Tab>", "<cmd>BufferLineCycleNext<cr>", { desc = "Next Buffer" })
+vim.keymap.set("n", "<S-Tab>", "<cmd>BufferLineCyclePrev<cr>", { desc = "Previous Buffer" })
+
+vim.keymap.set("n", "<leader>tn", "<cmd>tabnew<cr>", { desc = "New Tab" })
+vim.keymap.set("n", "<leader>tc", "<cmd>tabclose<cr>", { desc = "Close Tab" })
+vim.keymap.set("n", "<leader>to", "<cmd>tabonly<cr>", { desc = "Only This Tab" })
+
+vim.keymap.set("n", "<leader>gd", "<cmd>lua vim.lsp.buf.definition()<cr>", { desc = "Go to Definition" })
+vim.keymap.set("n", "<leader>gi", "<cmd>lua vim.lsp.buf.implementation()<cr>", { desc = "Go to Implementation" })
+vim.keymap.set("n", "<leader>gr", "<cmd>lua vim.lsp.buf.references()<cr>", { desc = "Go to References" })
+vim.keymap.set("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<cr>", { desc = "Rename Symbol" })
+vim.keymap.set("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<cr>", { desc = "Code Action" })
+
+--- git comms
+vim.keymap.set("n", "<leader>gs", "<cmd>Gitsigns stage_hunk<cr>", { desc = "Git Stage Hunk" })
+vim.keymap.set("n", "<leader>gr", "<cmd>Gitsigns reset_hunk<cr>", { desc = "Git Reset Hunk" })
+vim.keymap.set("n", "<leader>gp", "<cmd>Gitsigns preview_hunk<cr>", { desc = "Git Preview Hunk" })
+vim.keymap.set("n", "<leader>gb", "<cmd>Gitsigns blame_line<cr>", { desc = "Git Blame Line" })
+vim.keymap.set("n", "<leader>gd", "<cmd>Gitsigns diffthis<cr>", { desc = "Git Diff This" })
+vim.keymap.set("n", "<leader>gD", "<cmd>Gitsigns toggle_deleted<cr>", { desc = "Git Toggle Deleted" })
+vim.keymap.set("n", "<leader>gl", "<cmd>Gitsigns toggle_current_line_blame<cr>", { desc = "Git Toggle Line Blame" })
+vim.keymap.set("n", "<leader>gL", "<cmd>Gitsigns setqflist<cr>", { desc = "Git Set Quickfix List" })
+vim.keymap.set("n", "<leader>gR", "<cmd>Gitsigns reset_buffer<cr>", { desc = "Git Reset Buffer" })
+vim.keymap.set("n", "<leader>gS", "<cmd>Gitsigns stage_buffer<cr>", { desc = "Git Stage Buffer" })
+vim.keymap.set("n", "<leader>gU", "<cmd>Gitsigns undo_stage_hunk<cr>", { desc = "Git Undo Stage Hunk" })
 
 -- --------------------
 -- PLUGINS
@@ -79,6 +105,8 @@ require("lazy").setup({
     { "folke/tokyonight.nvim", lazy = false, priority = 1000 },
     { "nvim-tree/nvim-tree.lua" },
     { "nvim-lua/plenary.nvim" },
+    { "folke/which-key.nvim", event = "VeryLazy" },
+    { "akinsho/bufferline.nvim", version = "*", dependencies = { "nvim-tree/nvim-web-devicons" } },
     {
       'nyngwang/nvimgelion',
     },
@@ -100,6 +128,14 @@ require("lazy").setup({
     { "github/copilot.vim" },
     { "L3MON4D3/LuaSnip", build = "make install_jsregexp" },
     { "saadparwaiz1/cmp_luasnip" },
+    {
+       "iamcco/markdown-preview.nvim",
+      build = "cd app && npm install",
+      ft = { "markdown" },
+      config = function()
+        vim.g.mkdp_auto_start = 0
+      end,
+    }, 
     {
         "goolord/alpha-nvim",
         config = function()
@@ -164,10 +200,11 @@ require("lualine").setup({
     },
 })
 
+require("which-key").setup({})
 require("nvim-tree").setup({})
 require("telescope").setup({})
 require("nvim-treesitter.configs").setup({
-    ensure_installed = { "c", "lua", "vim", "javascript", "typescript", "python", "rust" },
+    ensure_installed = { "c", "lua", "vim", "javascript", "typescript", "python", "rust", "markdown", "markdown_inline", "html", "css", "json", "yaml", "bash", "gitignore", "dockerfile", "go", "cpp", "java", "php" },
     highlight = { enable = true },
 })
 
@@ -221,5 +258,16 @@ cmp.setup({
         { name = "buffer" },
         { name = "path" },
     })
+})
+
+require("bufferline").setup({
+    options = {
+        mode = "buffers", -- or "tabs"
+        diagnostics = "nvim_lsp",
+        separator_style = "slant", -- "slant" | "thick" | "thin"
+        show_buffer_close_icons = false,
+        show_close_icon = false,
+        always_show_bufferline = true,
+    }
 })
 
