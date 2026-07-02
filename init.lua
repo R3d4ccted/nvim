@@ -211,17 +211,35 @@ require("toggleterm").setup()
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 require("mason").setup()
+
+local lspconfig = require("lspconfig")
+
+-- Helper: get python from PATH (respects direnv if active)
+local function get_python_path()
+  return vim.fn.exepath("python3")
+end
+
 require("mason-lspconfig").setup({
     automatic_installation = false,
     ensure_installed = { "pyright", "clangd", "lua_ls" },
     handlers = {
         function(server_name)
-            require("lspconfig")[server_name].setup({
+            lspconfig[server_name].setup({
                 capabilities = capabilities,
             })
         end,
+        ["pyright"] = function()
+            lspconfig.pyright.setup({
+                capabilities = capabilities,
+                settings = {
+                    python = {
+                        pythonPath = get_python_path(),
+                    }
+                }
+            })
+        end,
         ["lua_ls"] = function()
-            require("lspconfig").lua_ls.setup({
+            lspconfig.lua_ls.setup({
                 capabilities = capabilities,
                 settings = {
                     Lua = {
@@ -232,6 +250,7 @@ require("mason-lspconfig").setup({
         end,
     }
 })
+
 
 local cmp = require("cmp")
 cmp.setup({
