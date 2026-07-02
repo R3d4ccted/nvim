@@ -52,6 +52,7 @@ vim.keymap.set("n", "<leader>Qa", "<cmd>qa!<cr>", { desc = "Quit All (force)" })
 vim.keymap.set("n", "<leader>x", "<cmd>bdelete<cr>", { desc = "Close current buffer" })
 vim.keymap.set("n", "<leader>so", "<cmd>source %<cr>", { desc = "Source current file" })
 vim.keymap.set("n", "<leader>ESC", "<cmd>nohlsearch<CR>", { desc = "Clear search highlight" })
+vim.keymap.set("n", "<leader>c", "<cmd>nohlsearch<CR>", { desc = "Clear search highlight" })
 
 vim.keymap.set("n", "<leader>e", "<cmd>NvimTreeToggle<cr>", { desc = "Toggle File Explorer" })
 vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Navigate window left" })
@@ -107,8 +108,11 @@ require("lazy").setup({
     { "nvim-lua/plenary.nvim" },
     { "folke/which-key.nvim", event = "VeryLazy" },
     { "akinsho/bufferline.nvim", version = "*", dependencies = { "nvim-tree/nvim-web-devicons" } },
-    {
-      'nyngwang/nvimgelion',
+    { "iamironz/android-nvim-plugin",
+        lazy = false,
+        config = function()
+            require("android").setup()
+        end,
     },
     { "nvim-tree/nvim-web-devicons" },
     { "nvim-telescope/telescope.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
@@ -128,14 +132,6 @@ require("lazy").setup({
     { "github/copilot.vim" },
     { "L3MON4D3/LuaSnip", build = "make install_jsregexp" },
     { "saadparwaiz1/cmp_luasnip" },
-    {
-       "iamcco/markdown-preview.nvim",
-      build = "cd app && npm install",
-      ft = { "markdown" },
-      config = function()
-        vim.g.mkdp_auto_start = 0
-      end,
-    }, 
     {
         "goolord/alpha-nvim",
         config = function()
@@ -191,7 +187,6 @@ require("lazy").setup({
 -- --------------------
 
 vim.cmd.colorscheme "tokyonight"
-
 require("lualine").setup({
     options = {
         theme = 'tokyonight',
@@ -204,7 +199,7 @@ require("which-key").setup({})
 require("nvim-tree").setup({})
 require("telescope").setup({})
 require("nvim-treesitter.configs").setup({
-    ensure_installed = { "c", "lua", "vim", "javascript", "typescript", "python", "rust", "markdown", "markdown_inline", "html", "css", "json", "yaml", "bash", "gitignore", "dockerfile", "go", "cpp", "java", "php" },
+    ensure_installed = { "c", "lua", "vim", "javascript", "typescript", "python", "rust", "markdown", "html", "css", "json", "yaml", "bash", "gitignore", "dockerfile", "go", "cpp", "java", "php" },
     highlight = { enable = true },
 })
 
